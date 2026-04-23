@@ -1,0 +1,107 @@
+<app-page-breadcrumb pageTitle="Transplant"></app-page-breadcrumb>
+
+<div class="space-y-6">
+  <div *ngIf="error" class="rounded-md border border-red-300 bg-red-50 p-3 text-sm text-red-700 dark:bg-red-900/20 dark:text-red-300">
+    {{ error }}
+  </div>
+
+  <!-- Tabs -->
+  <div class="flex flex-wrap gap-2 border-b border-gray-200 dark:border-gray-700">
+    <button
+      *ngFor="let r of resources"
+      type="button"
+      (click)="switchTab(r.key)"
+      [class.border-brand-500]="activeTab === r.key"
+      [class.text-brand-600]="activeTab === r.key"
+      [class.dark:text-brand-400]="activeTab === r.key"
+      class="border-b-2 border-transparent px-4 py-2 text-sm font-medium text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-gray-200">
+      {{ r.label }}
+    </button>
+  </div>
+
+  <app-component-card [title]="activeResource.label">
+    <!-- Form -->
+    <div class="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div *ngFor="let f of activeResource.fields" class="flex flex-col">
+        <label class="mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">{{ f.label }}</label>
+
+        <input
+          *ngIf="f.type === 'text'"
+          type="text"
+          [(ngModel)]="form[f.key]"
+          class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+
+        <input
+          *ngIf="f.type === 'number'"
+          type="number"
+          [(ngModel)]="form[f.key]"
+          class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+
+        <input
+          *ngIf="f.type === 'date'"
+          type="date"
+          [(ngModel)]="form[f.key]"
+          class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100" />
+
+        <select
+          *ngIf="f.type === 'select'"
+          [(ngModel)]="form[f.key]"
+          class="rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-brand-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100">
+          <option [ngValue]="undefined">-- Select --</option>
+          <option *ngFor="let o of f.options" [value]="o">{{ o }}</option>
+        </select>
+
+        <label *ngIf="f.type === 'boolean'" class="inline-flex items-center gap-2 pt-2">
+          <input type="checkbox" [(ngModel)]="form[f.key]" class="h-4 w-4" />
+          <span class="text-sm text-gray-700 dark:text-gray-300">Yes</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="mb-6 flex gap-2">
+      <button
+        type="button"
+        (click)="save()"
+        class="rounded-md bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-600">
+        {{ editingId ? 'Update' : 'Create' }}
+      </button>
+      <button
+        *ngIf="editingId"
+        type="button"
+        (click)="resetForm()"
+        class="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 dark:border-gray-600 dark:text-gray-200 dark:hover:bg-gray-800">
+        Cancel
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-gray-50 dark:bg-gray-800">
+          <tr>
+            <th *ngFor="let f of activeResource.fields" class="px-3 py-2 font-semibold text-gray-700 dark:text-gray-200">
+              {{ f.label }}
+            </th>
+            <th class="px-3 py-2 text-right font-semibold text-gray-700 dark:text-gray-200">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of rows[activeTab]" class="border-t border-gray-100 dark:border-gray-700">
+            <td *ngFor="let f of activeResource.fields" class="px-3 py-2 text-gray-700 dark:text-gray-300">
+              {{ displayValue(row, f) }}
+            </td>
+            <td class="px-3 py-2 text-right">
+              <button type="button" (click)="edit(row)" class="mr-2 text-brand-600 hover:underline">Edit</button>
+              <button type="button" (click)="remove(row)" class="text-red-600 hover:underline">Delete</button>
+            </td>
+          </tr>
+          <tr *ngIf="!rows[activeTab]?.length">
+            <td [attr.colspan]="activeResource.fields.length + 1" class="px-3 py-6 text-center text-gray-400">
+              No records.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </app-component-card>
+</div>
