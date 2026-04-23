@@ -7,7 +7,7 @@ import { Template } from '../../shared/models/template.model';
   providedIn: 'root'
 })
 export class ReportTemplateService {
-  private baseUrl = 'http://localhost:8085/api/schedules/templates';
+  private baseUrl = '/api/schedules/templates';
 
   constructor(private http: HttpClient) {}
 

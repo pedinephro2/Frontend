@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-const GATEWAY = 'http://localhost:8085/transplant-mongo';
+const GATEWAY = '/transplant-mongo';
 
 export interface KidneyTransplant {
   _id?: string;

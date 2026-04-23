@@ -32,7 +32,7 @@ export interface ClassificationResult {
 
 @Injectable({ providedIn: 'root' })
 export class DocumentMedicalService {
-  private apiUrl = 'http://localhost:8085/api/documents-medicaux';
+  private apiUrl = '/api/documents-medicaux';
 
   constructor(private http: HttpClient) {}
 

@@ -9,7 +9,7 @@ import { ReportScheduleRequest } from '../../shared/models/report-schedule.model
   providedIn: 'root'
 })
 export class ReportScheduleService {
-  private baseUrl = 'http://localhost:8085/api/schedules';
+  private baseUrl = '/api/schedules';
 
   constructor(private http: HttpClient) {}
 

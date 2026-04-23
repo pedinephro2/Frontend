@@ -12,7 +12,7 @@ import {
   providedIn: 'root',
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8085/api/auth';
+  private baseUrl = '/api/auth';
   private profileImage$ = new BehaviorSubject<string>('/images/user/owner.png');
 
   constructor(private http: HttpClient) {

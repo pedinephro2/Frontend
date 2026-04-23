@@ -37,7 +37,7 @@ export interface RejetPredictionResponse {
   providedIn: 'root',
 })
 export class RejetPredictionService {
-  private baseUrl = 'http://localhost:8085/api/ml/rejet';
+  private baseUrl = '/api/ml/rejet';
 
   constructor(private http: HttpClient) {}
 

@@ -56,7 +56,7 @@ export interface AnalyseIAResult {
 
 @Injectable({ providedIn: 'root' })
 export class ImageMedicaleService {
-  private apiUrl = 'http://localhost:8085/api/images-medicales';
+  private apiUrl = '/api/images-medicales';
 
   constructor(private http: HttpClient) {}
 

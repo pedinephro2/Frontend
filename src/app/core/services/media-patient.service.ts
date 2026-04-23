@@ -11,7 +11,7 @@ export interface Patient {
 
 @Injectable({ providedIn: 'root' })
 export class MediaPatientService {
-  private baseUrl = 'http://localhost:8085/api/patients';
+  private baseUrl = '/api/patients';
 
   constructor(private http: HttpClient) {}
 

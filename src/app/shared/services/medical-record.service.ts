@@ -7,7 +7,7 @@ import { MedicalRecordDTO } from '../models/patient.models';
   providedIn: 'root',
 })
 export class MedicalRecordService {
-  private baseUrl = 'http://localhost:8085/api/medical-records';
+  private baseUrl = '/api/medical-records';
 
   constructor(private http: HttpClient) {}
 
