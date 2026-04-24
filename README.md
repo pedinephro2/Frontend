@@ -1,116 +1,82 @@
-# Free Angular Tailwind Admin Dashboard Template - TailAdmin Angular
+# Frontend — Nephro Platform Web Dashboard
 
-TailAdmin Angular is a **free and open-source admin dashboard template** built with **Angular** and **Tailwind CSS**. It provides developers with everything they need to create a feature-rich, data-driven **back-end, dashboard, or admin panel** for any type of web project.
+Angular 21 single-page application for the Nephro Platform. Provides a clinical dashboard for managing patients, monitoring vital signs, viewing lab results, tracking transplants, and analyzing medical images.
 
-![TailAdmin Angular Admin Dashboard](./angular-tailwind.png)
+Built on top of the [TailAdmin Angular](https://tailadmin.com/) template.
 
+## Tech Stack
 
-With TailAdmin Angular, you’ll get access to a complete set of **dashboard UI components, elements, and ready-to-use pages** to build a modern, high-quality admin panel. Whether it’s for a **complex web application** or a **lightweight project**, TailAdmin Angular is designed to speed up development of any kind of dashboards and admin panels.
+- Angular 21, TypeScript 5.9
+- Tailwind CSS 4.1
+- AmCharts 5 (advanced charts and maps)
+- ApexCharts (analytics charts)
+- FullCalendar 6 (scheduling and calendar views)
+- Tesseract.js (OCR for medical documents)
+- Swiper (image carousel)
+- ng-recaptcha (form security)
+- nginx (production serving)
 
-TailAdmin leverages the **powerful ecosystem of Angular 20+**, along with **TypeScript** and the utility-first styling of **Tailwind CSS v4**. Combined, they make TailAdmin Angular a perfect foundation to launch your dashboard or admin panel quickly and effectively.
+## Port
 
-TailAdmin Angular comes with essential UI components and layouts for building **feature-rich, data-driven dashboards** and **admin panels**. TailAdmin Angular is built on:
+`4200` (nginx in Docker) / `4200` (ng serve dev)
 
-* **Angular 20+**
-* **TypeScript**
-* **Tailwind CSS v4**
+## API Proxy
 
-### Quick Links
+In production (Docker), nginx forwards all API calls to the gateway at `http://gateway:8085`:
 
-- ✨ [Visit Website](https://tailadmin.com/)
-- 🚀 [Angular Demo](https://angular-demo.tailadmin.com/)
-- 📄 [Documentation](https://tailadmin.com/docs)
-- ⬇️ [Download](https://tailadmin.com/download)
-- 🖌️ [Figma Design File (Free Edition)](https://www.figma.com/community/file/1463141366275764364)
-- ⚡ [Get PRO Version](https://tailadmin.com/pricing)
----
+| Frontend path | Gateway route |
+|---|---|
+| `/api/*` | microservice1, microservice2, microservice4 |
+| `/vital-signs/*` | vital-signs-service |
+| `/transplant-mongo/*` | transplant-service |
+| `/lab-results/*` | lab-results-service |
+| `/medical-media/*` | medical-media-service |
+| `/ml-rejet/*` | ml-rejet |
 
-## Feature Comparison
+## Key Features
 
-| Feature | Free Version | Pro Version 🌟 |
-|---------|--------------|----------------|
-| **Dashboards** | 1 Unique Dashboard | 7 Unique Dashboards: Analytics, Ecommerce, Marketing, SaaS, CRM, Stocks, Logistics and more (more coming soon) 📈 |
-| **UI Elements and Components** | 100+ UI elements and components | Included in 500+ components and UI elements |
-| **Design Files** | Basic Figma design files | Complete Figma design system file |
-| **Support** | Community support| Email support |
+- **Authentication** — login, registration, and role-based route guards (PATIENT, DOCTOR, ADMIN, NURSE)
+- **Patient management** — patient list, profiles, and medical history
+- **Vital signs dashboard** — real-time charts for blood pressure, heart rate, temperature, SpO2
+- **Lab results** — result tables, trend charts, and calendar view
+- **Transplant tracker** — biopsy records, HLA data, rejection history, drug protocols
+- **Medical imaging** — upload, view, and compare medical images with AI analysis
+- **Rejection risk** — ML prediction form with SHAP factor display
+- **Report scheduling** — configure and schedule automated PDF report delivery
+- **Growth charts** — pediatric weight/height charts with WHO percentile references
 
-### Other Versions
-
-- [Next.js Version](https://github.com/TailAdmin/free-nextjs-admin-dashboard)
-- [React.js Version](https://github.com/TailAdmin/free-react-tailwind-admin-dashboard)
-- [Vue.js Version](https://github.com/TailAdmin/vue-tailwind-admin-dashboard)
-- [Angular Version](https://github.com/TailAdmin/free-angular-tailwind-dashboard)
-- [Laravel Version](https://github.com/TailAdmin/tailadmin-laravel)
-
-## Installation
-
-### Prerequisites
-
-Before you start, make sure you have:
-
-* **Node.js 20.x or later** (Node.js 20.x recommended)
-* **Angular CLI** installed globally:
-
-```bash
-npm install -g @angular/cli
-```
-
----
-
-### Cloning the Repository
-
-Clone the repository:
-
-```bash
-git clone https://github.com/TailAdmin/free-angular-admin-dashboard.git
-```
-
----
-
-### Install Dependencies
+## Running Locally
 
 ```bash
 npm install
-# or
-yarn install
+ng serve
 ```
 
----
+Opens at `http://localhost:4200`. Requires backend services running (or configure a dev proxy).
 
-### Start Development Server
+## Build for Production
 
 ```bash
-npm start
+ng build --configuration production
 ```
 
-Then open:
-👉 `http://localhost:4200`
+Output goes to `dist/`. The Docker image copies this into nginx.
 
----
+## Docker
 
-## Angualr.js Tailwind Components
+```bash
+docker build -t azizos07/frontend:latest .
+docker run -p 4200:80 azizos07/frontend:latest
+```
 
-TailAdmin Angular ships with a rich set of **ready-to-use dashboard features**:
+## Environment
 
-* **Ecommerce Dashboard** with essential elements
-* Modern, accessible **sidebar navigation**
-* **Data visualization** with charts and graphs
-* **User profile management** and a **custom 404 page**
-* **Tables** and **charts** (line, bar, etc.)
-* **Authentication forms** and reusable input components
-* **UI elements**: alerts, dropdowns, modals, buttons, and more
-* Built-in **Dark Mode** 🕶️
-* and many more
+`src/environments/environment.ts`:
 
-
-## Changelog
-
-### v1.0.2 (2025-12-30)
-
-- **Upgrade**: Successfully upgraded project to **Angular 21**.
-- **New Feature**: Implementing **Dynamic API Keys** management.
-  - Added functionalities to **Add**, **Edit**, **Delete**, and **Regenerate** API Keys.
-- **Enhancement**: Integrated **Flatpickr** date range picker in `StatisticsChartComponent`.
-- **Bug Fix**: Resolved `NG0100` ExpressionChangedAfterItHasBeenCheckedError in `PieChartTwoComponent`.
-- **Bug Fix**: Fixed `NG8113` warning in `AddApiKeyModalComponent` by removing unused imports.
-- **Cleanup**: Removed unused imports and optimized code across various components.
+```typescript
+export const environment = {
+  production: false,
+  apiUrl: '/vital-signs',
+  transplantApiUrl: '/transplant-mongo'
+};
+```
